@@ -1,4 +1,3 @@
-import DashboardHeader from "@/components/DashboardHeader";
 import StatsGrid from "@/components/StatsGrid";
 import SupplyChainFlow from "@/components/SupplyChainFlow";
 import CompliancePanel from "@/components/CompliancePanel";
@@ -8,23 +7,19 @@ import StellarNetworkStatus from "@/components/StellarNetworkStatus";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <DashboardHeader />
+    <div className="px-6 py-6 space-y-6">
+      <StellarNetworkStatus />
+      <StatsGrid />
 
-      <main className="container px-6 py-6 space-y-6">
-        <StellarNetworkStatus />
-        <StatsGrid />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <SupplyChainFlow />
+        <CompliancePanel />
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <SupplyChainFlow />
-          <CompliancePanel />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <RecentEvents />
-          <EntityRegistry />
-        </div>
-      </main>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <RecentEvents />
+        <EntityRegistry />
+      </div>
     </div>
   );
 };
