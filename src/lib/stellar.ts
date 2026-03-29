@@ -1,4 +1,5 @@
 import * as StellarSdk from "@stellar/stellar-sdk";
+import { rpc } from "@stellar/stellar-sdk";
 
 // Stellar Mainnet configuration
 const HORIZON_URL = "https://horizon.stellar.org";
@@ -9,7 +10,7 @@ const NETWORK_PASSPHRASE = StellarSdk.Networks.PUBLIC;
 export const horizon = new StellarSdk.Horizon.Server(HORIZON_URL);
 
 // Soroban RPC client for smart contract interaction
-export const sorobanRpc = new StellarSdk.SorobanRpc.Server(SOROBAN_RPC_URL);
+export const sorobanRpc = new rpc.Server(SOROBAN_RPC_URL);
 
 export { NETWORK_PASSPHRASE, HORIZON_URL, SOROBAN_RPC_URL };
 
