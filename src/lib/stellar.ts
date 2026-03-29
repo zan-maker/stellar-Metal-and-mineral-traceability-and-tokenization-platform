@@ -19,13 +19,11 @@ export { NETWORK_PASSPHRASE, HORIZON_URL, SOROBAN_RPC_URL };
  */
 export async function getLatestLedger(): Promise<{
   sequence: number;
-  closedAt: string;
   protocolVersion: number;
 }> {
   const result = await sorobanRpc.getLatestLedger();
   return {
     sequence: result.sequence,
-    closedAt: "",
     protocolVersion: result.protocolVersion,
   };
 }
@@ -44,7 +42,7 @@ export async function invokeContractRead(
   contractId: string,
   method: string,
   args: StellarSdk.xdr.ScVal[] = []
-): Promise<StellarSdk.SorobanRpc.Api.SimulateTransactionResponse> {
+): Promise<rpc.Api.SimulateTransactionResponse> {
   const account = new StellarSdk.Account(
     "GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWHF",
     "0"
@@ -83,13 +81,15 @@ export async function buildContractTransaction(
     .build();
 
   const simulated = await sorobanRpc.simulateTransaction(tx);
-  if (StellarSdk.SorobanRpc.Api.isSimulationError(simulated)) {
-    throw new Error(`Simulation failed: ${simulated.error}`);
+  if (rpc.Api.isSimulationError(simulated)) {
+    throw new Error(
+      `Simulation failed: ${(simulated as rpc.Api.SimulateTransactionErrorResponse).error}`
+    );
   }
 
-  return StellarSdk.SorobanRpc.assembleTransaction(
+  return rpc.assembleTransaction(
     tx,
-    simulated as StellarSdk.SorobanRpc.Api.SimulateTransactionSuccessResponse
+    simulated as rpc.Api.SimulateTransactionSuccessResponse
   ).build();
 }
 
@@ -98,7 +98,7 @@ export async function buildContractTransaction(
  */
 export async function submitTransaction(
   signedTx: StellarSdk.Transaction
-): Promise<StellarSdk.SorobanRpc.Api.GetTransactionResponse> {
+): Promise<rpc.Api.GetTransactionResponse> {
   const response = await sorobanRpc.sendTransaction(signedTx);
 
   if (response.status === "ERROR") {
